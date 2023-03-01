@@ -62,7 +62,7 @@ function print_usage() {
   info "${TAB}-c|--config          Transfer src/config/* files"
   info "${TAB}-m|--map_file        Transfer src/map_file/* files"
   info "${TAB}-s|--script          Transfer script/* files"
-  info "${TAB}-csv|--csv           Transfer csv files" 
+  info "${TAB}-csv|--csv           Transfer csv files"
   info "${TAB}-h|--help            Show this message and exit"
   info "Second Option:"
   info "${TAB}-t|--taxi            jiangsulingxing_robotaxi project"
@@ -70,19 +70,19 @@ function print_usage() {
 }
 ###############################################################################
 
-function chose_car(){
+function chose_car() {
   local cmd=$2
   case $cmd in
-    -t | --taxi)
-      default_dir="${default_dir_taxi}"
-      ;;
-    -b | --bus)
-      default_dir="${default_dir_bus}"
-      ;;
-    *)
-      error "Second option invalid input: -t(--taxi) or -b(--bus)"
-      exit 0
-      ;;
+  -t | --taxi)
+    default_dir="${default_dir_taxi}"
+    ;;
+  -b | --bus)
+    default_dir="${default_dir_bus}"
+    ;;
+  *)
+    error "Second option invalid input: -t(--taxi) or -b(--bus)"
+    exit 0
+    ;;
   esac
 
   local_path="${default_local_path_project}/${default_dir}"
@@ -91,42 +91,42 @@ function chose_car(){
   # info "target_path = ${target_path}"
 }
 
-function scp_lib(){
+function scp_lib() {
   chose_car $@
   start "scp [${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] to [${GREEN}${target_path}/devel/lib/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/devel/lib/* ${target_path}/devel/lib/
   ok "[${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] finish transfer!"
 
-  start "scp [${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] to [${GREEN}${target_path}/src/kernel/perception/lib/arm/${NO_COLOR}] ······"  
+  start "scp [${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] to [${GREEN}${target_path}/src/kernel/perception/lib/arm/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/src/kernel/perception/lib/arm/* ${target_path}/src/kernel/perception/lib/arm/
-  ok "[${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] finish transfer!"  
+  ok "[${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] finish transfer!"
 }
 
-function scp_config(){
+function scp_config() {
   chose_car $@
   start "scp [${GREEN}${default_dir}/src/config/*${NO_COLOR}] to [${GREEN}${target_path}/src/config/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/src/config/* ${target_path}/src/config/
   ok "[${GREEN}${default_dir}/src/config/*${NO_COLOR}] finish transfer!"
 }
 
-function scp_map_file(){
-  chose_car $@  
+function scp_map_file() {
+  chose_car $@
   start "scp [${GREEN}${default_dir}/src/map_file/*${NO_COLOR}] to [${GREEN}${target_path}/src/map_file/${NO_COLOR}] ······"
-  ${ssh_pass} scp -r ${local_path}/src/map_file/* ${target_path}/src/map_file/  
+  ${ssh_pass} scp -r ${local_path}/src/map_file/* ${target_path}/src/map_file/
   ok "[${GREEN}${default_dir}/src/map_file/*${NO_COLOR}] finish transfer!"
 }
 
-function scp_script(){
-  chose_car $@  
+function scp_script() {
+  chose_car $@
   start "scp [${GREEN}${default_dir}/script/*${NO_COLOR}] to [${GREEN}${target_path}/src/script/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/script/* ${target_path}/script/
   ok "[${GREEN}${default_dir}/script/*${NO_COLOR}] finish transfer!"
 }
 
-function scp_csv(){
-  chose_car $@  
+function scp_csv() {
+  chose_car $@
   start "scp [${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] to [${GREEN}${default_dir}/.${NO_COLOR}] ······"
-  ${ssh_pass} scp -r ${target_path}/src/kernel/perception/*.csv ./  
+  ${ssh_pass} scp -r ${target_path}/src/kernel/perception/*.csv ./
   ok "[${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] finish transfer!"
 }
 ###############################################################################
@@ -139,34 +139,34 @@ function main() {
   fi
 
   case $cmd in
-    -h | --help)
-      print_usage
-      exit 0
-      ;;
-    -l | --lib)
-      scp_lib $@
-      exit 0
-      ;;
-    -c | --config)
-      scp_config $@
-      exit 0
-      ;;
-    -m | --map_file)
-      scp_map_file $@
-      exit 0
-      ;;
-    -s | --script)
-      scp_script $@
-      exit 0
-      ;;
-    -csv | --csv)
-      scp_csv $@
-      exit 0
-      ;;
-    *)
-      print_usage
-      exit 1
-      ;;      
+  -h | --help)
+    print_usage
+    exit 0
+    ;;
+  -l | --lib)
+    scp_lib $@
+    exit 0
+    ;;
+  -c | --config)
+    scp_config $@
+    exit 0
+    ;;
+  -m | --map_file)
+    scp_map_file $@
+    exit 0
+    ;;
+  -s | --script)
+    scp_script $@
+    exit 0
+    ;;
+  -csv | --csv)
+    scp_csv $@
+    exit 0
+    ;;
+  *)
+    print_usage
+    exit 1
+    ;;
   esac
 }
 

@@ -48,8 +48,8 @@ function start() {
 
 # 1. -s: segperception
 function segperception() {
-# 用于播放原始包，运行1_visionsegperception_offline.launch
-  if [ $# -eq 2 ] ;then
+  # 用于播放原始包，运行1_visionsegperception_offline.launch
+  if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for segperception"
     # 屏蔽/tpvisionlandet/compressed、/tpvisionsegments/compressed
     rosbag play $2 /tpvisionlandet/compressed:=/LANDET /tpvisionsegments/compressed:=/SEG
@@ -60,8 +60,8 @@ function segperception() {
 
 # 2. -v: visionperception
 function visionperception() {
-# 用于播放1_segperception.bag，运行2_visionperception_offline.launch
-  if [ $# -eq 2 ] ;then
+  # 用于播放1_segperception.bag，运行2_visionperception_offline.launch
+  if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for visionperception"
     # 屏蔽/tpvisionobjects、/tptrafficlight
     rosbag play $2 /tpvisionobjects:=/OBG /tptrafficlight:=/TRA
@@ -72,8 +72,8 @@ function visionperception() {
 
 # 3. -d: dogmperception
 function dogmperception() {
-# 用于播放2_visionperception.bag，运行3_dogmperception_offline.launch
-  if [ $# -eq 2 ] ;then
+  # 用于播放2_visionperception.bag，运行3_dogmperception_offline.launch
+  if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for dogmperception"
     # 屏蔽/dogmperception/output
     rosbag play $2 /dogmperception/output:=/DOGM
@@ -84,8 +84,8 @@ function dogmperception() {
 
 # 4. -p1: perception
 function perception() {
-# 用于播放3_dogmperception.bag，运行4_perception_offline.launch
-  if [ $# -eq 2 ] ;then
+  # 用于播放3_dogmperception.bag，运行4_perception_offline.launch
+  if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for perception"
     rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD
   else
@@ -95,8 +95,8 @@ function perception() {
 
 # 5. -p2: prediction
 function prediction() {
-# 用于播放4_perception.bag，运行5_prediction_offline.launch
-  if [ $# -eq 2 ] ;then
+  # 用于播放4_perception.bag，运行5_prediction_offline.launch
+  if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for prediction"
     rosbag play $2 /tpprediction:=/TP2
   else
@@ -106,8 +106,8 @@ function prediction() {
 
 # 6. -p3: perception_all
 function perception_all() {
-# 用于播放原始.bag，运行0_perception_all.launch
-  if [ $# -eq 2 ] ;then
+  # 用于播放原始.bag，运行0_perception_all.launch
+  if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for perception_all"
     rosbag play $2 /tpvisionlandet/compressed:=/LANDET /tpvisionsegments/compressed:=/SEG /tpvisionobjects:=/OBG /tptrafficlight:=/TRA /dogmperception/output:=/DOGM /tpperception:=/TP1 /tpprediction:=/TP2
   else
@@ -135,38 +135,38 @@ function main() {
   fi
 
   case $cmd in
-    -s | --segperception)
-      segperception $@
-      exit 0
-      ;;
-    -v | --visionperception)
-      visionperception $@
-      exit 0
-      ;;
-    -d | --dogmperception)
-      dogmperception $@
-      exit 0
-      ;;
-    -p1 | --perception)
-      perception $@
-      exit 0
-      ;;
-    -p2 | --prediction)
-      prediction $@
-      exit 0
-      ;;
-    -p3 | --prediction_all)
-      perception_all $@
-      exit 0
-      ;;
-    -h | --help)
-      print_usage
-      exit 0
-      ;;
-    *)
-      print_usage
-      exit 1
-      ;;      
+  -s | --segperception)
+    segperception $@
+    exit 0
+    ;;
+  -v | --visionperception)
+    visionperception $@
+    exit 0
+    ;;
+  -d | --dogmperception)
+    dogmperception $@
+    exit 0
+    ;;
+  -p1 | --perception)
+    perception $@
+    exit 0
+    ;;
+  -p2 | --prediction)
+    prediction $@
+    exit 0
+    ;;
+  -p3 | --prediction_all)
+    perception_all $@
+    exit 0
+    ;;
+  -h | --help)
+    print_usage
+    exit 0
+    ;;
+  *)
+    print_usage
+    exit 1
+    ;;
   esac
 }
 
