@@ -57,6 +57,8 @@ function segperception() {
     rosbag record /driver/lidar/rs_80_packets/top_center \
       /driver/lidar/rs_helios_packets/top_center \
       /driver/lidar/vlp_32_packets/center \
+      /driver/lidar/rs_bp_packets/left \
+      /driver/lidar/rs_bp_packets/right \
       /driver/lidar/rs_helios_packets/left \
       /driver/lidar/rs_helios_packets/right \
       /driver/lidar/vlp_16_packets/left \
@@ -106,6 +108,8 @@ function visionperception() {
     rosbag record /driver/lidar/rs_80_packets/top_center \
       /driver/lidar/rs_helios_packets/top_center \
       /driver/lidar/vlp_32_packets/center \
+      /driver/lidar/rs_bp_packets/left \
+      /driver/lidar/rs_bp_packets/right \
       /driver/lidar/rs_helios_packets/left \
       /driver/lidar/rs_helios_packets/right \
       /driver/lidar/vlp_16_packets/left \
@@ -159,6 +163,8 @@ function dogmperception() {
     rosbag record /driver/lidar/rs_80_packets/top_center \
       /driver/lidar/rs_helios_packets/top_center \
       /driver/lidar/vlp_32_packets/center \
+      /driver/lidar/rs_bp_packets/left \
+      /driver/lidar/rs_bp_packets/right \
       /driver/lidar/rs_helios_packets/left \
       /driver/lidar/rs_helios_packets/right \
       /driver/lidar/vlp_16_packets/left \
@@ -213,6 +219,8 @@ function perception() {
     rosbag record /driver/lidar/rs_80_packets/top_center \
       /driver/lidar/rs_helios_packets/top_center \
       /driver/lidar/vlp_32_packets/center \
+      /driver/lidar/rs_bp_packets/left \
+      /driver/lidar/rs_bp_packets/right \
       /driver/lidar/rs_helios_packets/left \
       /driver/lidar/rs_helios_packets/right \
       /driver/lidar/vlp_16_packets/left \
@@ -279,6 +287,8 @@ function prediction() {
     rosbag record /driver/lidar/rs_80_packets/top_center \
       /driver/lidar/rs_helios_packets/top_center \
       /driver/lidar/vlp_32_packets/center \
+      /driver/lidar/rs_bp_packets/left \
+      /driver/lidar/rs_bp_packets/right \
       /driver/lidar/rs_helios_packets/left \
       /driver/lidar/rs_helios_packets/right \
       /driver/lidar/vlp_16_packets/left \
