@@ -279,7 +279,21 @@ function perception() {
   fi
 }
 
-# 5. -p2: prediction
+# 5. -pc: perception_for_control,感知仿真后,记录控制模块仿真所需话题
+function perception_for_control() {
+  if [ $# -eq 2 ]; then
+    start "${GREEN}rosbag record for perception_for_control"
+    # 重点记录/tpperception
+    rosbag record /tpimu \
+      /tpperception \
+      /tppathplan \
+      /tpcanfeedback -o ${2}/4_perception_for_control.bag
+  else
+    error "${RED}Error param numbers!"
+  fi
+}
+
+# 6. -p2: prediction
 function prediction() {
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag record for prediction"
@@ -346,15 +360,69 @@ function prediction() {
   fi
 }
 
+# 7. -pp: prediction_for_planning, 感知->预测仿真后,记录规划仿真所需话题
+function prediction_for_planning() {
+  if [ $# -eq 2 ]; then
+    start "${GREEN}rosbag record for prediction_for_planning"
+    # 重点记录/tpprediction
+    rosbag record /mapengine/tpnavigation \
+      /mapengine/tpnavmission \
+      /tpimu \
+      /tppcican \
+      /tpperception \
+      /tpcontrolfeedback \
+      /miivii_gmsl_ros_node_A/camera/compressed \
+      /tpprediction -o ${2}/5_prediction_for_planning.bag
+  else
+    error "${RED}Error param numbers!"
+  fi
+}
+
+# 8. -p: planning, 规划仿真,记录相关可视化话题
+function planning() {
+  if [ $# -eq 2 ]; then
+    start "${GREEN}rosbag record for planning"
+    # 重点记录/tppathplan
+    rosbag record /tpimu \
+      /tpconbox \
+      /mapengine/tpnavigation \
+      /mapengine/tpnavmission \
+      /tpcontrol \
+      /lon_control_debug \
+      /lat_control_debug \
+      /lat_control_debug_pt \
+      /lon_control_debug_pt \
+      /control_sys \
+      /stmap_debug \
+      /planningdebug \
+      /planning_debug/xt_boundary_debug \
+      /tppathplan \
+      /target_reference_line \
+      /mapengine/tpnavigation \
+      /tpprediction \
+      /tpperception \
+      /prediction_debug/lanenet \
+      /prediction_debug/junctionnet \
+      /prediction_debug/objectsfeature \
+      /miivii_gmsl_ros_node_A/camera/compressed \
+      /tplanelines -o ${2}/6_planning.bag 
+  else
+    error "${RED}Error param numbers!"
+  fi
+}
+
 function print_usage() {
   info "Usage: $0 [Options]"
   info "Options:"
-  info "${TAB}-s |--segperception     rosbag record for segperception module."
-  info "${TAB}-v |--visionperception  rosbag record for visionperception module."
-  info "${TAB}-d |--dogmperception    rosbag record for dogmperception module."
-  info "${TAB}-p1|--perception        rosbag record for perception module."
-  info "${TAB}-p2|--prediction        rosbag record for prediction module."
-  info "${TAB}-h |--help              Show this message and exit."
+  info "${TAB}-s |--segperception             rosbag record for segperception module."
+  info "${TAB}-v |--visionperception          rosbag record for visionperception module."
+  info "${TAB}-d |--dogmperception            rosbag record for dogmperception module."
+  info "${TAB}-p1|--perception                rosbag record for perception module."
+  info "${TAB}-pc|--perception_for_control    rosbag record for perception_for_control module."
+  info "${TAB}-p2|--prediction                rosbag record for prediction module."
+  info "${TAB}-pp|--prediction_for_planning   rosbag record for prediction_for_planning module."
+  info "${TAB}-p |--planning                  rosbag record for planning module."
+  info "${TAB}-h |--help                      Show this message and exit."
 }
 
 function main() {
@@ -385,10 +453,22 @@ function main() {
     perception $@
     exit 0
     ;;
+  -pc | --perception_for_control)
+    perception_for_control $@
+    exit 0
+    ;;
   -p2 | --prediction)
     prediction $@
     exit 0
     ;;
+  -pp | --prediction_for_planning)
+    prediction_for_planning $@
+    exit 0
+    ;;
+  -p | --planning)
+    planning $@
+    exit 0
+    ;;    
   *)
     print_usage
     exit 1

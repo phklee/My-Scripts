@@ -109,7 +109,13 @@ function perception_all() {
   # 用于播放原始.bag，运行0_perception_all.launch
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for perception_all"
-    rosbag play $2 /tpvisionlandet/compressed:=/LANDET /tpvisionsegments/compressed:=/SEG /tpvisionobjects:=/OBG /tptrafficlight:=/TRA /dogmperception/output:=/DOGM /tpperception:=/TP1 /tpprediction:=/TP2
+    rosbag play $2 /tpvisionlandet/compressed:=/LANDET \
+      /tpvisionsegments/compressed:=/SEG \
+      /tpvisionobjects:=/OBG \
+      /tptrafficlight:=/TRA \
+      /dogmperception/output:=/DOGM \
+      /tpperception:=/TP1 \
+      /tpprediction:=/TP2
   else
     error"${RED}Error param numbers!"
   fi
