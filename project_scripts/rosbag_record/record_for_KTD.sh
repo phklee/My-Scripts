@@ -205,7 +205,9 @@ function dogmperception() {
       /debug/vision_segment_result \
       /debug/object_detect_result \
       /debug/trafficlight_results \
-      /dogm/debug/no_ground_cloud -o ${2}/3_dogmperception.bag
+      /dogm/debug/no_ground_cloud \
+      /dogm_cluster/dogm_clouds \
+      /dogm_cluster/dogmdet -o ${2}/3_dogmperception.bag
   else
     error "${RED}Error param numbers!"
   fi
@@ -244,6 +246,8 @@ function perception() {
       /target_reference_line \
       /tpars0 \
       /tpars1 \
+      /radarprocess/object \
+      /radarprocess/track \
       /tpbusiness_cmd \
       /tpbusiness_status \
       /tpcanfeedback \
@@ -266,8 +270,12 @@ function perception() {
       /lidar/debug/cluster_bbox \
       /lidar/debug/cluster_polygon \
       /dogm/debug/no_ground_cloud \
+      /dogm_cluster/dogmdet \
+      /dogm_cluster/dogm_clouds \
       /lidar/debug/no_ground_cloud \
       /fusion/semantic_image \
+      /fusion/cam_det \
+      /fusion/cam_trk \
       /fusion/lidardet \
       /fusion/radardet \
       /fusion/dogmdet \
@@ -360,11 +368,12 @@ function prediction() {
   fi
 }
 
-# 7. -pp: prediction_for_planning, 感知->预测仿真后,记录规划仿真所需话题
+# 7. -pp: prediction_for_planning_control, 感知->预测仿真后,记录规划和控制仿真所需话题
 function prediction_for_planning() {
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag record for prediction_for_planning"
     # 重点记录/tpprediction
+
     rosbag record /mapengine/tpnavigation \
       /mapengine/tpnavmission \
       /tpimu \
@@ -372,7 +381,9 @@ function prediction_for_planning() {
       /tpperception \
       /tpcontrolfeedback \
       /miivii_gmsl_ros_node_A/camera/compressed \
-      /tpprediction -o ${2}/5_prediction_for_planning.bag
+      /tpprediction \
+      /tppathplan \
+      /tpcanfeedback -o ${2}/5_prediction_for_planning.bag
   else
     error "${RED}Error param numbers!"
   fi

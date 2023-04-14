@@ -117,7 +117,7 @@ def make_fusion_debug():
         line3 = ['confi', 'fuse_source', 'fuse_point', 'is_reversed', 'cell_size']
         # line4 = ['correlate_id', 'correlate_age', 'correlate_cnt']
         line5 = ['dogm_velo', 'dogm_vxabs', 'dogm_vyabs', 'dogm_v_heading']
-        line6 = ['x_vcs', 'y_vcs', 'heading_vcs', 'x_dr', 'y_dr', 'heading_dr', 'length',' width', 'height', 'lidar_type', 'lidarConfi', 'lidarId']
+        line6 = ['x_vcs', 'y_vcs', 'heading_vcs', 'x_dr', 'y_dr', 'heading_dr', 'matched_length',' matched_width', 'matched_height', 'lidar_type', 'lidarConfi', 'lidarId']        
         # line7 = ['correlate_id', 'correlate_age']
         line8 = ['lidar2cam_valid', 'totalCamObjs', 'is_l2c_updated', 'timestamp', 'cluster_x', 'cluster_y', 'norm_heading',
                  'orientation_id', 'norm_type', 'is_cluster_obj', 'trk_enable', 'trk_id', 'trk_age', 'camIdx', 'geo_isvalid', 'geo_distance']
@@ -125,7 +125,7 @@ def make_fusion_debug():
         line10 = ['trk_type_confi', 'trk_is_type_sure', 'trk_heading_source', 'trk_heading_vcs', 'has_conflict', 'conflict_cnt']
         line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'vx_rms', 'vy_rms']
         line12 = ['is_ultra_static', 'rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_mean_rms', 'v_heading', 'v_heading_rms']
-        line13 = ['x_center_vcs', 'y_center_vcs', 'length_predict', 'width_predict', 'length', 'width']
+        line13 = ['x_center_vcs', 'y_center_vcs', 'length_predict', 'width_predict', 'length', 'width', 'height']
         line14 = ['tf', 'R_id', 'radar_type', 'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr',
                   'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_heading_dr']
         line15 = ['is_dogm_unique']
@@ -146,8 +146,7 @@ def make_fusion_debug():
 
             for trk in msg.tracks:
                 data1 = [system_time, frameId, trk.tf, trk.id, trk.type, trk.age,
-                              trk.x, trk.y, trk.vx, trk.vy, math.sqrt(
-                                  math.pow(trk.vx, 2)+math.pow(trk.vy, 2)),
+                              trk.x, trk.y, trk.vx, trk.vy, math.sqrt(math.pow(trk.vx, 2)+math.pow(trk.vy, 2)),
                               trk.velo_quality, trk.velo_moving_status, trk.velo_is_trk_static, trk.velo_static_cnt]
                 data2 = [trk.dogm_info.is_dogm_valid, trk.dogm_info.dynamic_cnt, trk.dogm_info.static_cnt, 
                          trk.dogm_info.is_dogm_static]
@@ -166,7 +165,7 @@ def make_fusion_debug():
                           trk.heading_mean, trk.heading_rms, math.atan2(trk.vy,trk.vx)/3.14*180,
                           trk.velo_heading_rms]
                 data13 = [trk.x_center_vcs, trk.y_center_vcs, trk.length_predict, trk.width_predict,
-                          trk.length, trk.width]
+                          trk.length, trk.width, trk.height]
 
                 if len(trk.matched_dets) > 0:
                     for det in trk.matched_dets:
@@ -197,7 +196,7 @@ def make_fusion_debug():
                             #         x_dr = det.bbox_dr_bx
                             #         y_dr = det.bbox_dr_by
                             # data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
-                            #          det.width, det.type, det.lidarConfi, det.id]
+                            #           det.width, det.type, det.lidarConfi, det.id]
                         data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
                                     det.width, det.height, det.type, det.lidarConfi, det.id]
                         data8_1 = [p.l2c_findSyncImage, trk.l2c_totalCamObjs, trk.is_l2c_updated]
@@ -250,7 +249,7 @@ def make_raw_inputs():
         line7 = ['loc_time', 'loc_xg', 'loc_yg', 'loc_zg', 'loc_yawrate', 'loc_speed', 'loc_yaw', 'loc_roll', 'loc_pitch']
         line8 = ['dr_time', 'dr_x', 'dr_y', 'dr_z', 'dr_roll', 'dr_pitch', 'dr_yaw']
 
-        data_writer.writerow(line1+line2+line3+line4+line5+line6)
+        data_writer.writerow(line1+line2+line3+line4+line5+line6+line7+line8)
 
         # Get all message
         for topic, msg, t in bag.read_messages(topics=['/fusion_debug']):
@@ -314,7 +313,7 @@ def make_tpperception():
 
         data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        line1 = ['systime', 'obj_time', 'id', 'type', 'age', 'x', 'y', 'vxrel', 'vyrel', 'width', 'length',
+        line1 = ['systime', 'obj_time', 'id', 'type', 'age', 'x', 'y', 'z', 'vxrel', 'vyrel', 'width', 'length',
                  'height', 'confi', 'cell_size', 'fuse_source']
         line2 = ['xabs','yabs', 'vxabs', 'vyabs', 'speed', 'is_ultra_static', 'moving_status', 'heading']
 
@@ -326,8 +325,8 @@ def make_tpperception():
 
             objects = msg.obstacle_info.objs
             for obj in objects:
-                obj_data = [obs_time_stamp, obj.id, obj.age, obj.type, obj.x, obj.y, obj.vxrel, obj.vyrel, obj.xabs,
-                            obj.yabs, obj.vxabs, obj.vyabs, obj.width, obj.length, obj.speed, 
+                obj_data = [obs_time_stamp, obj.id, obj.age, obj.type, obj.x, obj.y, obj.z, obj.vxrel, obj.vyrel, obj.xabs,
+                            obj.yabs, obj.vxabs, obj.vyabs, obj.width, obj.length, obj.height, obj.speed, 
                             obj.is_ultra_static, obj.moving_status, obj.heading]
 
                 cells = obj.cells
@@ -381,7 +380,7 @@ def make_tpperception():
                 else:
                     fuse_source = "NONE"
 
-                data1 = [systime, obs_time_stamp, obj.id, obj.type, obj.age, obj.x, obj.y, obj.vxrel, obj.vyrel,
+                data1 = [systime, obs_time_stamp, obj.id, obj.type, obj.age, obj.x, obj.y, obj.z, obj.vxrel, obj.vyrel,
                          obj.width, obj.length, obj.height, obj.confidence, len(cells), fuse_source]
 
                 data2 = [obj.xabs, obj.yabs, obj.vxabs, obj.vyabs, obj.speed, obj.is_ultra_static, obj.moving_status,
@@ -408,9 +407,8 @@ def make_tpperception():
         for intr in target_cell_list:
             for point in intr:
                 data_writer.writerow(point)
+
 ###############################################
-
-
 def main():
     make_profile()
     make_fusion_debug()

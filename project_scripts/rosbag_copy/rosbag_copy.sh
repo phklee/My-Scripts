@@ -25,7 +25,7 @@ NO_COLOR='\033[0m'
 TAB="    " # 4 Spaces
 bag_local_save_path="/home/idriver/avos3_0/bugs/robobus/boye_k06"
 bag_remote_path="/media/nvidia/idriverplus/record_bags/bags/"
-date="20230228"
+date="20230304"
 txt_file="${date}.txt"
 
 remote_user="nvidia"

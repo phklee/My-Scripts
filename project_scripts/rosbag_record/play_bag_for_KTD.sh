@@ -87,7 +87,10 @@ function perception() {
   # 用于播放3_dogmperception.bag，运行4_perception_offline.launch
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for perception"
-    rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD
+    # 关闭毫米波
+    # rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD /tpars0:=/T0 /tpars1:=/T1 -s 15
+    # 打开毫米波
+    rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD -s 4
   else
     error"${RED}Error param numbers!"
   fi
@@ -121,6 +124,23 @@ function perception_all() {
   fi
 }
 
+# 7. -p: planning
+function planning() {
+  # 用于播放原始.bag
+  if [ $# -eq 2 ]; then
+    start "${GREEN}rosbag play for planning"
+    rosbag play $2 --topic /mapengine/tpnavigation \
+      /mapengine/tpnavmission \
+      /tpimu /tppcican \
+      /tpperception \
+      /tpprediction \
+      /tpcontrolfeedback \
+      /miivii_gmsl_ros_node_A/camera/compressed
+  else
+    error"${RED}Error param numbers!"
+  fi
+}
+
 function print_usage() {
   info "Usage: $0 [Options]"
   info "Options:"
@@ -130,6 +150,7 @@ function print_usage() {
   info "${TAB}-p1|--perception        rosbag play for play for nch perception module."
   info "${TAB}-p2|--prediction        rosbag play for prediction module."
   info "${TAB}-p3|--prediction_all    rosbag play for all perception module."
+  info "${TAB}-p |--planning          rosbag play for all planning module."
   info "${TAB}-h |--help              Show this message and exit."
 }
 
@@ -165,6 +186,10 @@ function main() {
     perception_all $@
     exit 0
     ;;
+  -p | --planning)
+    planning $@
+    exit 0
+    ;;    
   -h | --help)
     print_usage
     exit 0
