@@ -197,8 +197,8 @@ def make_fusion_debug():
                             #         y_dr = det.bbox_dr_by
                             # data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
                             #           det.width, det.type, det.lidarConfi, det.id]
-                        data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
-                                    det.width, det.height, det.type, det.lidarConfi, det.id]
+                            data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
+                                        det.width, det.height, det.type, det.lidarConfi, det.id]
                         data8_1 = [p.l2c_findSyncImage, trk.l2c_totalCamObjs, trk.is_l2c_updated]
                         if trk.is_l2c_updated == True and trk.l2c_totalCamObjs == 1:
                             camIdx = 'none'
