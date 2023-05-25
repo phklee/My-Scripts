@@ -368,22 +368,19 @@ function prediction() {
   fi
 }
 
-# 7. -pp: prediction_for_planning_control, 感知->预测仿真后,记录规划和控制仿真所需话题
+# 7. -pp: prediction_for_planning, 感知->预测仿真后,记录规划和认知决策仿真所需话题
 function prediction_for_planning() {
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag record for prediction_for_planning"
     # 重点记录/tpprediction
-
-    rosbag record /mapengine/tpnavigation \
-      /mapengine/tpnavmission \
-      /tpimu \
-      /tppcican \
+    rosbag record /tpimu \
       /tpperception \
-      /tpcontrolfeedback \
-      /miivii_gmsl_ros_node_A/camera/compressed \
       /tpprediction \
-      /tppathplan \
-      /tpcanfeedback -o ${2}/5_prediction_for_planning.bag
+      /tpcontrolfeedback \
+      /mapengine/tpnavigation \
+      /mapengine/tpnavmission \
+      /miivii_gmsl_ros_node_A/camera/compressed \
+      /tppcican -o ${2}/5_prediction_for_planning.bag
   else
     error "${RED}Error param numbers!"
   fi
@@ -398,6 +395,7 @@ function planning() {
       /tpconbox \
       /mapengine/tpnavigation \
       /mapengine/tpnavmission \
+      /tppcican \
       /tpcontrol \
       /lon_control_debug \
       /lat_control_debug \
@@ -409,9 +407,8 @@ function planning() {
       /planning_debug/xt_boundary_debug \
       /tppathplan \
       /target_reference_line \
-      /mapengine/tpnavigation \
-      /tpprediction \
       /tpperception \
+      /tpprediction \
       /prediction_debug/lanenet \
       /prediction_debug/junctionnet \
       /prediction_debug/objectsfeature \
