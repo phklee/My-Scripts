@@ -38,26 +38,36 @@ function ok() {
 function print_usage() {
   info "Usage: $0"
   info "${TAB}start_wechat        启动微信"
-  info "${TAB}stop_wechat         关闭微信"  
+  info "${TAB}stop_wechat         关闭微信"
   info "${TAB}start_clash         启动Clash-VPN"
   info "${TAB}start_iodeclient    启动iNodeClient-VPN"
+  info "${TAB}start_memos         启动memos"
+  info "${TAB}stop_memos          关闭memos"
 }
 ###############################################################################
 
-function start_wechat(){
+function start_wechat() {
   /home/idriver/Software/docker/wechat/start_wechat.sh
 }
 
-function stop_wechat(){
+function stop_wechat() {
   /home/idriver/Software/docker/wechat/stop_wechat.sh
 }
 
-function start_clash(){
+function start_clash() {
   /home/idriver/Software/clash/cfw
 }
 
-function start_inodeclient(){
+function start_inodeclient() {
   /home/idriver/work/idriver_/1_RoboX/6_tools/2_soft/iNodeClient/iNodeClient.sh
+}
+
+function start_memos() {
+  /home/idriver/work/codes_/github_/memos/docker/start_docker.sh
+}
+
+function stop_memos() {
+  /home/idriver/work/codes_/github_/memos/docker/stop_docker.sh
 }
 ###############################################################################
 
@@ -69,30 +79,38 @@ function main() {
   fi
 
   case $cmd in
-    -h | --help)
-      print_usage
-      exit 0
-      ;;
-    --start_wechat)
-      start_wechat
-      exit 0
-      ;;
-    --stop_wechat)
-      stop_wechat
-      exit 0
-      ;;
-    --start_clash)
-      start_clash
-      exit 0
-      ;;
-    --start_inodeclient)
-      start_inodeclient
-      exit 0
-      ;;      
-    *)
-      print_usage
-      exit 1
-      ;;      
+  -h | --help)
+    print_usage
+    exit 0
+    ;;
+  --start_wechat)
+    start_wechat
+    exit 0
+    ;;
+  --stop_wechat)
+    stop_wechat
+    exit 0
+    ;;
+  --start_clash)
+    start_clash
+    exit 0
+    ;;
+  --start_inodeclient)
+    start_inodeclient
+    exit 0
+    ;;
+  --start_memos)
+    start_memos
+    exit 0
+    ;;
+  --stop_memos)
+    stop_memos
+    exit 0
+    ;;
+  *)
+    print_usage
+    exit 1
+    ;;
   esac
 }
 
