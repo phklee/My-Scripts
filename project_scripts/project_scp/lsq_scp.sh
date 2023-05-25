@@ -28,8 +28,9 @@ default_path_project="/work/share/project"
 
 default_dir=""
 default_dir_bus="RoboBus_CYC"
-# default_dir_taxi="jiangsulingxing_robotaxi"
 default_dir_taxi="Robotaxi_CYC"
+default_dir_jiangsu_taxi="jiangsulingxing_robotaxi"
+default_dir_changan_taxi="PVBU2120_Changan_Robotaxi"
 
 remote_user="nvidia"
 remote_passwd="idriver_bbox"
@@ -38,6 +39,8 @@ ssh_pass="sshpass -p ${remote_passwd}"
 
 local_path=""
 target_path=""
+
+time=$(date "+%Y-%m-%d %H:%M:%S")
 ###############################################################################
 
 function info() {
@@ -79,6 +82,12 @@ function chose_car() {
   -b | --bus)
     default_dir="${default_dir_bus}"
     ;;
+  -jst | --jiangsutaxi)
+    default_dir="${default_dir_jiangsu_taxi}"
+    ;;
+  -cat | --changantaxi)
+    default_dir="${default_dir_changan_taxi}"
+    ;;
   *)
     error "Second option invalid input: -t(--taxi) or -b(--bus)"
     exit 0
@@ -95,39 +104,39 @@ function scp_lib() {
   chose_car $@
   start "scp [${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] to [${GREEN}${target_path}/devel/lib/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/devel/lib/* ${target_path}/devel/lib/
-  ok "[${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] finish transfer!"
+  ok "[${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 
   start "scp [${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] to [${GREEN}${target_path}/src/kernel/perception/lib/arm/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/src/kernel/perception/lib/arm/* ${target_path}/src/kernel/perception/lib/arm/
-  ok "[${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] finish transfer!"
+  ok "[${GREEN}${default_dir}/src/kernel/perception/lib/arm/*${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 }
 
 function scp_config() {
   chose_car $@
   start "scp [${GREEN}${default_dir}/src/config/*${NO_COLOR}] to [${GREEN}${target_path}/src/config/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/src/config/* ${target_path}/src/config/
-  ok "[${GREEN}${default_dir}/src/config/*${NO_COLOR}] finish transfer!"
+  ok "[${GREEN}${default_dir}/src/config/*${NO_COLOR}] finish transfer at ${RED}${time}${NO_COLOR}!"
 }
 
 function scp_map_file() {
   chose_car $@
   start "scp [${GREEN}${default_dir}/src/map_file/*${NO_COLOR}] to [${GREEN}${target_path}/src/map_file/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/src/map_file/* ${target_path}/src/map_file/
-  ok "[${GREEN}${default_dir}/src/map_file/*${NO_COLOR}] finish transfer!"
+  ok "[${GREEN}${default_dir}/src/map_file/*${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 }
 
 function scp_script() {
   chose_car $@
   start "scp [${GREEN}${default_dir}/script/*${NO_COLOR}] to [${GREEN}${target_path}/src/script/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/script/* ${target_path}/script/
-  ok "[${GREEN}${default_dir}/script/*${NO_COLOR}] finish transfer!"
+  ok "[${GREEN}${default_dir}/script/*${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 }
 
 function scp_csv() {
   chose_car $@
   start "scp [${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] to [${GREEN}${default_dir}/.${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${target_path}/src/kernel/perception/*.csv ./
-  ok "[${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] finish transfer!"
+  ok "[${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 }
 ###############################################################################
 
