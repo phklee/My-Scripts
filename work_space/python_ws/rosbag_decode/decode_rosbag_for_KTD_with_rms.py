@@ -15,6 +15,7 @@
 # 2022-08-26, modify for KTD_update
 # 2022-11-29, fusion.csv中的x_vcs与fuse_point无关
 # 2023-02-24, 增加对fusion_debug中的keyinfo的解析
+# 2023-05-25, 增加velo_heading_rms和velo_heading_mean的记录
 
 import sys
 import os
@@ -124,7 +125,7 @@ def make_fusion_debug():
         line9 = ['lidar2semantic_valid', 'total_pts', 'background_pts', 'road_curb_pts', 'fense_pts', 'roadblock_pts', 'car_pts', 'other_pts']
         line10 = ['trk_type_confi', 'trk_is_type_sure', 'trk_heading_source', 'trk_heading_vcs', 'has_conflict', 'conflict_cnt']
         line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'vx_rms', 'vy_rms']
-        line12 = ['is_ultra_static', 'rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_rms', 'v_heading']
+        line12 = ['is_ultra_static', 'rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_rms', 'v_heading', 'v_heading_mean', 'v_heading_rms']
         line13 = ['x_center_vcs', 'y_center_vcs', 'length_predict', 'width_predict', 'length', 'width', 'height']
         line14 = ['tf', 'R_id', 'R_type', 'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr',
                   'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_heading_dr']
@@ -162,7 +163,8 @@ def make_fusion_debug():
                           trk.heading_has_conflict, trk.heading_conflict_cnt]
                 data11 = [trk.vx_bbox_dr, trk.vy_bbox_dr, trk.velo_vx_rms, trk.velo_vy_rms]
                 data12 = [trk.heading_is_ultra_static, trk.heading_lower_cnt, trk.heading_upper_cnt,
-                          trk.heading_mean, trk.heading_rms, math.atan2(trk.vy,trk.vx)/3.14*180]
+                          trk.heading_mean, trk.heading_rms, math.atan2(trk.vy,trk.vx)/3.14*180,
+                          trk.velo_heading_mean, trk.velo_heading_rms]
                 data13 = [trk.x_center_vcs, trk.y_center_vcs, trk.length_predict, trk.width_predict,
                           trk.length, trk.width, trk.height]
 
@@ -388,7 +390,7 @@ def make_tpperception():
                 data_writer.writerow(data1+data2)
 
                 # get specific track cells data
-                if obj.id == 25009:
+                if obj.id == 253:
                     point = []
                     counter = 0
                     for c in cells:
