@@ -1,22 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 
-# update history
-# 2021-05-13: zr, update fusion_debug.csv to support dor logs
-# 2021-05-27: zr, update geo_width
-# 2021-06-02, update profile with callback timestamp
-# 2021-06-08, add is_top_bottom_reversed bit decode
-# 2021-07-01, update lidar2cam info and heading status
-# 2021-07-12, update heading bits
-# 2021-08-31, update profile and fusion_debug to support ldd and semantic
-# 2021-09-17, update profile with landet sync info
-# 2022-01-10, add fusion track bits
-# 2022-04-11, add semantic info
-# 2022-08-26, modify for KTD_update
-# 2022-11-29, fusion.csv中的x_vcs与fuse_point无关
-# 2023-02-24, 增加对fusion_debug中的keyinfo的解析
-# 2023-05-25, 增加velo_heading_rms和velo_heading_mean的记录
-
 import sys
 import os
 import csv
@@ -112,28 +96,10 @@ def make_fusion_debug():
 
         data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        line1 = ['systime', 'p_cnt', 'tf', 'trk_id', 'type', 'age', 'x', 'y', 'vx', 'vy', 'speed',
-                 'v_status', 'moving_status', 'is_trk_static', 'velo_static_cnt']
-        line2 = ['is_dogm_valid', 'dogm_dynamic_cnt', 'dogm_static_cnt', 'is_dogm_static']
-        line3 = ['confi', 'fuse_source', 'fuse_point', 'is_reversed', 'cell_size']
-        # line4 = ['correlate_id', 'correlate_age', 'correlate_cnt']
-        line5 = ['dogm_velo', 'dogm_vxabs', 'dogm_vyabs', 'dogm_v_heading']
-        line6 = ['x_vcs', 'y_vcs', 'heading_vcs', 'x_dr', 'y_dr', 'heading_dr', 'matched_length',' matched_width', 'matched_height', 'lidar_type', 'lidarConfi', 'lidarId']        
-        # line7 = ['correlate_id', 'correlate_age']
-        line8 = ['lidar2cam_valid', 'totalCamObjs', 'is_l2c_updated', 'timestamp', 'cluster_x', 'cluster_y', 'norm_heading',
-                 'orientation_id', 'norm_type', 'is_cluster_obj', 'trk_enable', 'trk_id', 'trk_age', 'camIdx', 'geo_isvalid', 'geo_distance']
-        line9 = ['lidar2semantic_valid', 'total_pts', 'background_pts', 'road_curb_pts', 'fense_pts', 'roadblock_pts', 'car_pts', 'other_pts']
-        line10 = ['trk_type_confi', 'trk_is_type_sure', 'trk_heading_source', 'trk_heading_vcs', 'has_conflict', 'conflict_cnt']
-        line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'vx_rms', 'vy_rms']
-        line12 = ['is_ultra_static', 'rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_rms', 'v_heading', 'v_heading_mean', 'v_heading_rms']
-        line13 = ['x_center_vcs', 'y_center_vcs', 'length_predict', 'width_predict', 'length', 'width', 'height']
-        line14 = ['tf', 'R_id', 'R_type', 'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr',
-                  'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_heading_dr']
-        line15 = ['is_dogm_unique']
-        line16 = ['loc_time', 'loc_xg', 'loc_yg', 'loc_zg', 'loc_yawrate', 'loc_speed', 'loc_yaw', 'loc_roll', 'loc_pitch']
-        line17 = ['dr_time', 'dr_x', 'dr_y', 'dr_z', 'dr_roll', 'dr_pitch', 'dr_yaw']
+        line1 = ['systime', 'p_cnt', 'tf', 'trk_id', 'type', 'age', 'x', 'y', 'x_center_vcs', 'y_center_vcs', 'vx', 'vy', 'v_heading', 'speed',
+                'is_trk_static', 'velo_status', 'velo_static_cnt', 'dor_static_cnt']
 
-        data_writer.writerow(line1+line2+line3+line5+line6+line8+line9+line10+line11+line12+line13+line14+line15+line16+line17)
+        data_writer.writerow(line1)
 
         # Get all message
         for topic, msg, t in bag.read_messages(topics=['/fusion_debug']):
@@ -147,92 +113,9 @@ def make_fusion_debug():
 
             for trk in msg.tracks:
                 data1 = [system_time, frameId, trk.tf, trk.id, trk.type, trk.age,
-                              trk.x, trk.y, trk.vx, trk.vy, math.sqrt(math.pow(trk.vx, 2)+math.pow(trk.vy, 2)),
-                              trk.velo_quality, trk.velo_moving_status, trk.velo_is_trk_static, trk.velo_static_cnt]
-                data2 = [trk.dogm_info.is_dogm_valid, trk.dogm_info.dynamic_cnt, trk.dogm_info.static_cnt, 
-                         trk.dogm_info.is_dogm_static]
-                data3 = [trk.confidence, trk.fuse_source, trk.fuse_point, trk.is_top_bottom_reversed, trk.cells_size]
-                # data4 = []
-                data5 = [trk.dogm_info.velocity, trk.dogm_info.vxabs, trk.dogm_info.vyabs, trk.dogm_info.v_heading]
-                data6 = ['', '', '', '', '', '', '', '', '','', '', '']
-                # data7 = []
-                data8_1 = ['', '', '']
-                data8_2 = ['', '', '', '', '', '', '', '', '', '', '', '', '']
-                data9 = ['', '', '', '', '', '', '', '']
-                data10 = [trk.type_confidence, trk.is_type_sure, trk.heading_source, trk.heading_vcs,
-                          trk.heading_has_conflict, trk.heading_conflict_cnt]
-                data11 = [trk.vx_bbox_dr, trk.vy_bbox_dr, trk.velo_vx_rms, trk.velo_vy_rms]
-                data12 = [trk.heading_is_ultra_static, trk.heading_lower_cnt, trk.heading_upper_cnt,
-                          trk.heading_mean, trk.heading_rms, math.atan2(trk.vy,trk.vx)/3.14*180,
-                          trk.velo_heading_mean, trk.velo_heading_rms]
-                data13 = [trk.x_center_vcs, trk.y_center_vcs, trk.length_predict, trk.width_predict,
-                          trk.length, trk.width, trk.height]
-
-                if len(trk.matched_dets) > 0:
-                    for det in trk.matched_dets:
-                        if det.source == 'lidar':
-                            x_vcs = det.x_vcs
-                            y_vcs = det.y_vcs
-                            x_dr = det.x_dr
-                            y_dr = det.y_dr
-                            # # # # 障碍物中心点坐标与fuse_point无关
-                            # if trk.fuse_point == 1:  # bottom fuse point
-                            #     x_vcs = det.bbox_vcs_bx
-                            #     y_vcs = det.bbox_vcs_by
-                            #     x_dr = det.bbox_dr_bx
-                            #     y_dr = det.bbox_dr_by
-                            #     if trk.is_top_bottom_reversed == True:
-                            #         x_vcs = det.bbox_vcs_tx
-                            #         y_vcs = det.bbox_vcs_ty
-                            #         x_dr = det.bbox_dr_tx
-                            #         y_dr = det.bbox_dr_ty
-                            # if trk.fuse_point == 2:  # top fuse point
-                            #     x_vcs = det.bbox_vcs_tx
-                            #     y_vcs = det.bbox_vcs_ty
-                            #     x_dr = det.bbox_dr_tx
-                            #     y_dr = det.bbox_dr_ty
-                            #     if trk.is_top_bottom_reversed == True:
-                            #         x_vcs = det.bbox_vcs_bx
-                            #         y_vcs = det.bbox_vcs_by
-                            #         x_dr = det.bbox_dr_bx
-                            #         y_dr = det.bbox_dr_by
-                            # data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
-                            #           det.width, det.type, det.lidarConfi, det.id]
-                            data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, '', det.length,
-                                        det.width, det.height, det.type, det.lidarConfi, det.id]
-                        data8_1 = [p.l2c_findSyncImage, trk.l2c_totalCamObjs, trk.is_l2c_updated]
-                        if trk.is_l2c_updated == True and trk.l2c_totalCamObjs == 1:
-                            camIdx = 'none'
-                            if trk.l2c_camIdx == 0:
-                                camIdx = 'frontH60'
-                            elif trk.l2c_camIdx == 1:
-                                camIdx = 'leftH90'
-                            elif trk.l2c_camIdx == 2:
-                                camIdx = 'rightH90'
-                            data8_2 = [trk.l2c_time_triggered, trk.l2c_x, trk.l2c_y, trk.l2c_heading,
-                                        trk.l2c_orientation_id, trk.l2c_norm_type, trk.l2c_is_cluster_obj,
-                                        trk.l2c_track_enable, trk.l2c_track_id, trk.l2c_track_age, camIdx]
-                        else:
-                            data8_2 = ['', '', '', '', '', '', '', '', '', '', '']
-                        data8_2 = data8_2 + [det.geo_isvalid, det.geo_distance]
-                    data9 = [det.sem_is_valid, det.sem_total_cloud_pts, det.sem_background_pts,
-                             det.sem_road_curb_pts, det.sem_fense_pts, det.sem_roadblock_pts,
-                             det.sem_roaduser_car_pts, det.sem_roaduser_other_pts]
-
-                data14 = ['', '', '', '', '', '', '', '', '', '', '', '', '']
-                data15 = ['']
-                if len(trk.matched_dets) > 0:
-                    for det in trk.matched_dets:
-                        if det.source == 'radar':
-                            data14 = ['radar', det.id, det.type, det.x_vcs, det.y_vcs, det.vx_vcs, det.vy_vcs,
-                                      det.heading_vcs, det.x_dr, det.y_dr, det.vx_dr, det.vy_dr, '']
-                        data15 = [det.is_dogm_unique]
-
-                # lisiqi
-                # data_writer.writerow(trk_data_1 + trk_data_2 + lidar_data_1 + lidar_data_2 + lidar_data_3 +
-                #                      lidar_data_4 + lidar_data_5 + trk_data_3 + trk_data_4 + radar_data + locpos_data)
-                data_writer.writerow(data1+data2+data3+data5+data6+data8_1+data8_2+data9+data10+data11+
-                                     data12+data13+data14+data15+data16+data17)
+                              trk.x, trk.y, trk.x_center_vcs, trk.y_center_vcs, trk.vx, trk.vy, math.atan2(trk.vy,trk.vx)/3.14*180, math.sqrt(math.pow(trk.vx, 2)+math.pow(trk.vy, 2)),
+                              trk.is_trk_static, trk.velocitystatus, trk.velo_static_cnt, trk.dor_static_cnt]
+                data_writer.writerow(data1)
 
 ###############################################
 def make_raw_inputs():
@@ -240,7 +123,7 @@ def make_raw_inputs():
         data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         line1 = ['systime', 'p_cnt', 'source', 'id', 'is_dogm_unique']
-        line2 = ['x_raw', 'y_raw', 'vx_raw', 'vy_raw', 'heading_raw', 'x_dr', 'y_dr', 'vx_dr', 'vy_dr',
+        line2 = ['x_vcs', 'y_vcs', 'vx_vcs', 'vy_vcs', 'heading_vcs', 'x_dr', 'y_dr', 'vx_dr', 'vy_dr',
                  'length', 'width', 'height', 'type', 'confi']
         line3 = ['dogm_velo', 'dogm_vxabs', 'dogm_vyabs', 'dogm_v_heading', 'dogm_dynamic_cnt', 'dogm_static_cnt', 'is_dogm_static']
         line4 = ['totalCamObjs', 'isTrueObj', 'norm_type', 'geo_isvalid', 'geo_distance']
@@ -316,7 +199,7 @@ def make_tpperception():
 
         line1 = ['systime', 'obj_time', 'id', 'type', 'age', 'x', 'y', 'z', 'vxrel', 'vyrel', 'width', 'length',
                  'height', 'confi', 'cell_size', 'fuse_source']
-        line2 = ['xabs','yabs', 'vxabs', 'vyabs', 'speed', 'is_ultra_static', 'moving_status', 'heading']
+        line2 = ['xabs','yabs', 'vxabs', 'vyabs', 'speed', 'is_ultra_static', 'moving_status', 'heading', 'v_heading']
 
         data_writer.writerow(line1+line2)
 
@@ -385,12 +268,12 @@ def make_tpperception():
                          obj.width, obj.length, obj.height, obj.confidence, len(cells), fuse_source]
 
                 data2 = [obj.xabs, obj.yabs, obj.vxabs, obj.vyabs, obj.speed, obj.is_ultra_static, obj.moving_status,
-                         obj.heading]
+                         obj.heading, math.atan2(obj.vyabs, obj.vxabs)/3.14*180]
 
                 data_writer.writerow(data1+data2)
 
                 # get specific track cells data
-                if obj.id == 253:
+                if obj.id == 25009:
                     point = []
                     counter = 0
                     for c in cells:
@@ -423,11 +306,11 @@ def make_vehicle_info():
 
 ###############################################
 def main():
-    make_profile()
+    # make_profile()
     make_fusion_debug()
-    make_raw_inputs()
-    make_tpperception()
-    make_keyinfo()
+    # make_raw_inputs()
+    # make_tpperception()
+    # make_keyinfo()
     # make_vehicle_info()
     # make_mapengine()
 

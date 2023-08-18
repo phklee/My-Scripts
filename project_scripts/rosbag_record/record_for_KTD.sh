@@ -246,8 +246,13 @@ function perception() {
       /target_reference_line \
       /tpars0 \
       /tpars1 \
+      /radarprocess/raw_object \
+      /radarprocess/raw_object/text \
       /radarprocess/object \
+      /radarprocess/object/text \
       /radarprocess/track \
+      /radarprocess/track/text \
+      /radarprocess/fusion \
       /tpbusiness_cmd \
       /tpbusiness_status \
       /tpcanfeedback \

@@ -8,6 +8,10 @@
 #  lisiqi         2022/12/13    1.0.0    初始版本.
 #  lisiqi         2022/12/26    1.0.1    拷贝bag包到指定四个文件夹中..
 #  lisiqi         2022/12/28    1.0.2    拷贝bag包到指定一个文件夹中.
+
+# Example:
+# 1. ./rosbag_copy.sh -112
+# 2. ./rosbag_copy.sh -all
 ###############################################################################
 
 set -e
@@ -23,9 +27,11 @@ NO_COLOR='\033[0m'
 ###############################################################################
 
 TAB="    " # 4 Spaces
-bag_local_save_path="/home/idriver/avos3_0/bugs/robobus/boye_k06"
+# bag_local_save_path="/home/idriver/avos3_0/bugs/robobus/boye_k06"
+bag_local_save_path=$(pwd)
 bag_remote_path="/media/nvidia/idriverplus/record_bags/bags/"
-date="20230304"
+date="20230808"
+# date=$(date "+%Y%m%d")
 txt_file="${date}.txt"
 
 remote_user="nvidia"
@@ -94,6 +100,14 @@ function bbox_select_115() {
 function rosbag_copy() {
   remote_path_data="${remote_user}@${remote_ip}:${bag_remote_path}/${date}"
   local_path_data="${bag_local_save_path}/${date}"
+  # 若本地文件夹不存在，则新建
+  # if [ ! -d "$local_path_data" ]; then
+  #   mkdir -p "$local_path_data"
+  # fi
+  # if [ ! -d "${bag_local_save_path}/${txt_file}" ]; then
+  #   mkdir "${bag_local_save_path}/${txt_file}"
+  # fi
+
   # info "remote_path_data = ${remote_path_data}"
   # info "local_path_data = ${local_path_data}"
   # info "bbox_name = ${bbox_name}"
