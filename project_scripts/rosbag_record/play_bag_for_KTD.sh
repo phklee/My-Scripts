@@ -76,7 +76,7 @@ function dogmperception() {
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for dogmperception"
     # 屏蔽/dogmperception/output
-    rosbag play $2 /dogmperception/output:=/DOGM
+    rosbag play $2 /dogmperception/output:=/DOGM -s 10
   else
     error "${RED}Error param numbers!"
   fi
@@ -88,9 +88,10 @@ function perception() {
   if [ $# -eq 2 ]; then
     start "${GREEN}rosbag play for perception"
     # 关闭毫米波
-    # rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD /tpars0:=/T0 /tpars1:=/T1 -s 15
+    # rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD /tpars0:=/T0 /tpars1:=/T1 -s 30
     # 打开毫米波
-    rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD -s 4
+    # rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD -s 25 -u 12 -l
+    rosbag play $2 /tpperception:=/TP1 /fusion_debug:=/FD -s 30
   else
     error"${RED}Error param numbers!"
   fi

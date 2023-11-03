@@ -31,6 +31,7 @@ default_dir_bus="RoboBus_CYC"
 default_dir_taxi="Robotaxi_CYC"
 default_dir_jiangsu_taxi="jiangsulingxing_robotaxi"
 default_dir_changan_taxi="PVBU2120_Changan_Robotaxi"
+default_dir_chengdu_taxi="A22010P1_Chengdu_Robotaxi"
 
 remote_user="nvidia"
 remote_passwd="idriver_bbox"
@@ -87,6 +88,9 @@ function chose_car() {
     ;;
   -cat | --changantaxi)
     default_dir="${default_dir_changan_taxi}"
+    ;;
+  -cdt | --chengdutaxi)
+    default_dir="${default_dir_chengdu_taxi}"
     ;;
   *)
     error "Second option invalid input: -t(--taxi) or -b(--bus)"

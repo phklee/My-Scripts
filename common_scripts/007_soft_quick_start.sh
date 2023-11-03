@@ -59,7 +59,7 @@ function start_clash() {
 }
 
 function start_inodeclient() {
-  /home/idriver/work/idriver_/1_RoboX/6_tools/2_soft/iNodeClient/iNodeClient.sh
+  /home/idriver/work/idriver_/2_tools/2_soft/iNodeClient/iNodeClient.sh
 }
 
 function start_memos() {

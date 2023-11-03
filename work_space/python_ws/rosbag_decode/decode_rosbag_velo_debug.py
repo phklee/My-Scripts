@@ -130,18 +130,21 @@ def make_fusion_debug():
         line6 = ['x_vcs', 'y_vcs', 'heading_vcs', 'x_dr', 'y_dr', 'heading_dr', 'matched_length',' matched_width', 'matched_height', 'lidar_type', 'lidarConfi', 'lidarId']        
         line7 = ['correlate_id', 'correlate_age']
         line8 = ['lidar2cam_valid', 'totalCamObjs', 'is_l2c_updated', 'timestamp', 'cluster_x', 'cluster_y', 'norm_heading',
-                 'orientation_id', 'norm_type', 'img_type', 'is_cluster_obj', 'trk_enable', 'trk_id', 'trk_age', 'camIdx', 'geo_isvalid', 'geo_distance']
+                 'orientation_id', 'norm_type', 'is_cluster_obj', 'trk_enable', 'trk_id', 'trk_age', 'camIdx', 'geo_isvalid', 'geo_distance']
         line9 = ['lidar2semantic_valid', 'total_pts', 'background_pts', 'road_curb_pts', 'fense_pts', 'roadblock_pts', 'car_pts', 'other_pts']
         line10 = ['trk_type_confi', 'trk_is_type_sure', 'trk_heading_source', 'trk_heading_vcs', 'has_conflict', 'conflict_cnt']
         line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'v_bbox_dr', 'vx_rms', 'vy_rms']
         line12 = ['is_ultra_static', 'rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_rms', 'v_heading', 'v_heading_mean', 'v_heading_rms']
         line13 = ['x_center_vcs', 'y_center_vcs', 'length_predict', 'width_predict', 'length', 'width', 'height']
-        line14 = ['tf', 'R_id', 'R_type', 'R_dyn', 'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr', 'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_speed', 'R_heading_dr']
+        line14 = ['tf', 'R_id', 'R_type', 'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr', 'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_speed', 'R_heading_dr']
         line15 = ['is_dogm_unique']
         line16 = ['loc_time', 'loc_xg', 'loc_yg', 'loc_zg', 'loc_yawrate', 'loc_speed', 'loc_yaw', 'loc_roll', 'loc_pitch']
         line17 = ['dr_time', 'dr_x', 'dr_y', 'dr_z', 'dr_roll', 'dr_pitch', 'dr_yaw']
+        line18 = ['l_lidar_history_length', 'l_radar_history_length', 'l_histort_velocity_length', 'l_tmp', 'l_lidar_vx_before', 'l_lidar_vy_before', 'l_lidar_vx_after',
+                  'l_lidar_vy_after', 'r_lidar_history_length', 'r_radar_history_length', 'r_histort_velocity_length', 'r_tmp', 'r_radar_vx_before', 'r_radar_vy_before'
+                  'r_radar_vx_after', 'r_radar_vy_after']
 
-        data_writer.writerow(line1+line2+line3+line4+line5+line6+line7+line8+line9+line10+line11+line12+line13+line14+line15+line16+line17)
+        data_writer.writerow(line1+line2+line3+line4+line5+line6+line7+line8+line9+line10+line11+line12+line13+line14+line15+line16+line17+line18)
 
         # Get all message
         for topic, msg, t in bag.read_messages(topics=['/fusion_debug']):
@@ -168,15 +171,19 @@ def make_fusion_debug():
                 data6 = ['', '', '', '', '', '', '', '', '', '', '', '']
                 data7 = ['', '']
                 data8_1 = ['', '', '']
-                data8_2 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                data8_2 = ['', '', '', '', '', '', '', '', '', '', '', '', '']
                 data9 = ['', '', '', '', '', '', '', '']
-                data10 = [trk.type_confidence, trk.is_type_sure, trk.heading_source, trk.heading_vcs, trk.heading_has_conflict, trk.heading_conflict_cnt]
+                data10 = [trk.type_confidence, trk.is_type_sure, trk.heading_source, trk.heading_vcs,
+                          trk.heading_has_conflict, trk.heading_conflict_cnt]
                 data11 = [trk.vx_bbox_dr, trk.vy_bbox_dr, math.sqrt(math.pow(trk.vx_bbox_dr, 2)+math.pow(trk.vy_bbox_dr, 2)), trk.velo_vx_rms, trk.velo_vy_rms]
                 data12 = [trk.heading_is_ultra_static, trk.heading_lower_cnt, trk.heading_upper_cnt,
                           trk.heading_mean, trk.heading_rms, math.atan2(trk.vy,trk.vx)/3.14*180,
                           trk.velo_heading_mean, trk.velo_heading_rms]
                 data13 = [trk.x_center_vcs, trk.y_center_vcs, trk.length_predict, trk.width_predict,
                           trk.length, trk.width, trk.height]
+                data18 = [trk.l_lidar_history_length, trk.l_radar_history_length, trk.l_histort_velocity_length, trk.l_tmp, trk.l_lidar_vx_before, trk.l_lidar_vy_before,
+                          trk.l_lidar_vx_after, trk.l_lidar_vy_after, trk.r_lidar_history_length, trk.r_radar_history_length, trk.r_histort_velocity_length, trk.r_tmp,
+                          trk.r_radar_vx_before, trk.r_radar_vy_before, trk.r_radar_vx_after, trk.r_radar_vy_after]
 
                 if len(trk.matched_dets) > 0:
                     for det in trk.matched_dets:
@@ -200,18 +207,18 @@ def make_fusion_debug():
                                 elif trk.l2c_camIdx == 2:
                                     camIdx = 'rightH90'
                                 data8_2 = [trk.l2c_time_triggered, trk.l2c_x, trk.l2c_y, trk.l2c_heading,
-                                            trk.l2c_orientation_id, trk.l2c_norm_type, trk.l2c_img_type, trk.l2c_is_cluster_obj,
+                                            trk.l2c_orientation_id, trk.l2c_norm_type, trk.l2c_is_cluster_obj,
                                             trk.l2c_track_enable, trk.l2c_track_id, trk.l2c_track_age, camIdx]
                             else:
-                                data8_2 = ['', '', '', '', '', '', '', '', '', '', '', '']
+                                data8_2 = ['', '', '', '', '', '', '', '', '', '', '']
                             data8_2 = data8_2 + [det.geo_isvalid, det.geo_distance]
 
-                data14 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                data14 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '']
                 data15 = ['']
                 if len(trk.matched_dets) > 0:
                     for det in trk.matched_dets:
                         if det.source == 'radar':
-                            data14 = ['radar', det.id, det.type, det.radar2cam_info.dyn_prop, det.x_vcs, det.y_vcs, det.vx_vcs, det.vy_vcs,
+                            data14 = ['radar', det.id, det.type, det.x_vcs, det.y_vcs, det.vx_vcs, det.vy_vcs,
                                       det.heading_vcs, det.x_dr, det.y_dr, det.radar2cam_info.vxabs, det.radar2cam_info.vyabs, 
                                       math.sqrt(math.pow(det.radar2cam_info.vxabs, 2)+math.pow(det.radar2cam_info.vyabs, 2)), '']
                         data15 = [det.is_dogm_unique]
@@ -220,7 +227,7 @@ def make_fusion_debug():
                 # data_writer.writerow(trk_data_1 + trk_data_2 + lidar_data_1 + lidar_data_2 + lidar_data_3 +
                 #                      lidar_data_4 + lidar_data_5 + trk_data_3 + trk_data_4 + radar_data + locpos_data)
                 data_writer.writerow(data1+data2+data3+data4+data5+data6+data7+data8_1+data8_2+data9+data10+data11+
-                                     data12+data13+data14+data15+data16+data17)
+                                     data12+data13+data14+data15+data16+data17+data18)
 
 ###############################################
 def make_raw_inputs():
@@ -414,22 +421,6 @@ def make_tpperception():
                 data_writer.writerow(point)
 
 ###############################################
-def make_tphmistatus():
-    with open(directory + "/" + filename[:-4]+'_hmistatus_output.csv', mode='w') as data_file:
-
-        data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-        line1 = ['systime', 'id', 'type', 'x', 'y', 'z', 'width', 'length', 'height', 'heading']
-        data_writer.writerow(line1)
-
-        for topic, msg, t in bag.read_messages(topics=['/tphmistatus']):
-            systime = msg.time_stamp
-            objects = msg.objects
-            for obj in objects:
-                data1 = [systime, obj.id, obj.type, obj.x, obj.y, obj.z, obj.width, obj.length, obj.height, obj.heading]
-                data_writer.writerow(data1)
-
-###############################################
 def make_vehicle_spd_from_pcican():
     with open(directory + "/" + filename[:-4]+'_spd_from_pcican.csv', mode='w') as data_file:
         data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -469,7 +460,6 @@ def main():
     # make_mapengine()
     # make_vehicle_spd_from_pcican()
     # make_vehicle_loc_from_imu()
-    # make_tphmistatus()
 
     print("Finished creating csv file!")
     bag.close()

@@ -250,9 +250,12 @@ function perception() {
       /radarprocess/raw_object/text \
       /radarprocess/object \
       /radarprocess/object/text \
+      /radarprocess/cluster \
+      /radarprocess/cluster/text \
       /radarprocess/track \
       /radarprocess/track/text \
       /radarprocess/fusion \
+      /radar2cam/image \
       /tpbusiness_cmd \
       /tpbusiness_status \
       /tpcanfeedback \
@@ -273,18 +276,20 @@ function perception() {
       /debug/object_detect_result \
       /debug/trafficlight_results \
       /lidar/debug/cluster_bbox \
+      /lidar/debug/cluster_bbox_text \
       /lidar/debug/cluster_polygon \
       /dogm/debug/no_ground_cloud \
       /dogm_cluster/dogmdet \
       /dogm_cluster/dogm_clouds \
       /lidar/debug/no_ground_cloud \
       /fusion/semantic_image \
-      /fusion/cam_det \
-      /fusion/cam_trk \
+      /lidar2object/cam_det \
+      /lidar2object/cam_trk \
+      /lidar2object/detections_lidar \
+      /lidar2object/cloudsImg \
       /fusion/lidardet \
       /fusion/radardet \
       /fusion/dogmdet \
-      /fusion/cloudsImg \
       /fusion/object_colored_clouds -o ${2}/4_perception.bag
 
   else
