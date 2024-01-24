@@ -149,6 +149,13 @@ function scp_csv() {
   ${ssh_pass} scp -r ${target_path}/src/kernel/perception/perception/*.csv ./
   ok "[${GREEN}${target_path}/src/kernel/perception/perception/*.csv${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 }
+
+function submoudle_sync() {
+  chose_car $@
+  cd ${local_path}/script/offline_perception/
+  git checkout develop
+  git pull
+}
 ###############################################################################
 
 function main() {
@@ -181,6 +188,10 @@ function main() {
     ;;
   -csv | --csv)
     scp_csv $@
+    exit 0
+    ;;
+  -submoudle_sync | --submoudle_sync)
+    submoudle_sync $@
     exit 0
     ;;
   *)
