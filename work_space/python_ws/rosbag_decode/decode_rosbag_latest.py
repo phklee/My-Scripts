@@ -485,8 +485,7 @@ def make_moving_status_debug():
                  'match_dogm_trk_vx', 'match_dogm_trk_vy', 'match_dogm_trk_velocity',
                  'match_radar_trk_vx', 'match_radar_trk_vy', 'match_radar_trk_velocity', 'is_velo_update_by_radar', 'radar_dynamic_cnt', 'radar_static_cnt']
         line2 = ['velo_static_cnt', 'box_iou_k', 'box_iou_static_cnt', 'box_iou_moving_cnt', 
-                  # 'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter', 'is_static_obj']
-                  'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter']
+                  'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter', 'is_static_obj']
         line3 = ['is_dogm_valid', 'dogm_confidence', 'dogm_grids_dynamic_cnt', 'dogm_grids_static_cnt', 'is_dogm_static', 'dogm_dynamic_cnt', 'dogm_static_cnt']
         line5 = ['dogm_vxabs', 'dogm_vyabs', 'dogm_velocity', 'dogm_v_heading']   
         line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'v_bbox_dr', 'rms_vx', 'rms_vy']
@@ -542,8 +541,7 @@ def make_moving_status_debug():
                           trk.match_radar.trk_vx, trk.match_radar.trk_vy, trk.match_radar.trk_velocity, trk.is_velo_update_by_radar, 
                           trk.velo_radar_dynamic_cnt, trk.velo_radar_static_cnt]
                 data2 = [trk.velo_static_cnt, trk.box_iou_k, trk.box_iou_static_cnt, trk.box_iou_moving_cnt, 
-                        #  trk.is_velo_greater_thr, trk.bbox_iou_trend, trk.bbox_iou_trend_over_thr, trk.reset_filter, trk.is_static_obj]
-                         trk.is_velo_greater_thr, trk.bbox_iou_trend, trk.bbox_iou_trend_over_thr, trk.reset_filter]
+                         trk.is_velo_greater_thr, trk.bbox_iou_trend, trk.bbox_iou_trend_over_thr, trk.reset_filter, trk.is_static_obj]
                 data3 = [trk.dogm_info.is_dogm_valid, trk.dogm_info.confidence, trk.dogm_info.grids_dynamic_cnt, trk.dogm_info.grids_static_cnt, trk.dogm_info.is_dogm_static,
                          trk.velo_dogm_dynamic_cnt, trk.velo_dogm_static_cnt]
                 data5 = [trk.dogm_info.vxabs, trk.dogm_info.vyabs, trk.dogm_info.velocity, trk.dogm_info.v_heading]
