@@ -106,6 +106,13 @@ function chose_car() {
 
 function scp_lib() {
   chose_car $@
+  for line in $(cat .git/HEAD); do
+    line=$line
+  done
+  sudo cp ./.git/${line} ./ -r
+  branch_name=$(git rev-parse --abbrev-ref HEAD)
+  ${ssh_pass} scp -r ${local_path}/${branch_name} ${target_path}/
+
   start "scp [${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] to [${GREEN}${target_path}/devel/lib/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/devel/lib/* ${target_path}/devel/lib/
   ok "[${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
@@ -138,9 +145,9 @@ function scp_script() {
 
 function scp_csv() {
   chose_car $@
-  start "scp [${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] to [${GREEN}${default_dir}/.${NO_COLOR}] ······"
-  ${ssh_pass} scp -r ${target_path}/src/kernel/perception/*.csv ./
-  ok "[${GREEN}${target_path}/src/kernel/perception/*.csv${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
+  start "scp [${GREEN}${target_path}/src/kernel/perception/perception/*.csv${NO_COLOR}] to [${GREEN}${default_dir}/.${NO_COLOR}] ······"
+  ${ssh_pass} scp -r ${target_path}/src/kernel/perception/perception/*.csv ./
+  ok "[${GREEN}${target_path}/src/kernel/perception/perception/*.csv${NO_COLOR}] finish transfer at ${RED}${time}!${NO_COLOR}"
 }
 ###############################################################################
 

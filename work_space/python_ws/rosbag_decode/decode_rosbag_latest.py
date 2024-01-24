@@ -121,11 +121,10 @@ def make_fusion_debug():
 
         line1 = ['systime', 'p_cnt', 'tf', 'trk_id', 'type', 'age', 'x', 'y', 'x_center_vcs', 'y_center_vcs', 'vx', 'vy', 'v_heading', 'heading_dr', 
                  'speed', 'vx_vcs', 'vy_vcs', 'v_status', 'moving_status', 'is_trk_static', 'velo_static_cnt', 'box_iou_k', 'box_iou_static_cnt', 
-                 'box_iou_moving_cnt', 'is_size_stable', 'is_in_roi', 'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter']
-        line2 = ['is_dogm_valid', 'dogm_dynamic_cnt', 'dogm_static_cnt', 'is_dogm_static']
+                 'box_iou_moving_cnt', 'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter']
+        line2 = ['is_dogm_valid', 'dogm_dynamic_grids_cnt', 'dogm_static_grids_cnt', 'is_dogm_static']
         line3 = ['confi', 'fuse_source', 'fuse_point', 'is_reversed', 'cell_size']
-        line4 = ['is_lidar_fuse', 'is_dogm_fuse', 'is_radar_fuse', 'lidar_vx', 'lidar_vy', 'lidar_velocity', 'dogm_vx', 'dogm_vy', 'dogm_velocity', 
-                 'radar_vx', 'radar_vy', 'radar_velocity']
+        line4 = ['is_lidar_fuse', 'is_dogm_fuse', 'is_radar_fuse']
         line5 = ['dogm_vxabs', 'dogm_vyabs', 'dogm_velo', 'dogm_v_heading']
         line6 = ['x_vcs', 'y_vcs', 'heading_vcs', 'x_dr', 'y_dr', 'heading_dr', 'matched_length',' matched_width', 'matched_height', 'lidar_type', 'lidarConfi', 'lidarId']        
         line7 = ['correlate_id', 'correlate_age']
@@ -136,7 +135,7 @@ def make_fusion_debug():
         line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'v_bbox_dr', 'vx_rms', 'vy_rms']
         line12 = ['is_ultra_static', 'rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_rms', 'v_heading', 'v_heading_mean', 'v_heading_rms']
         line13 = ['x_center_vcs', 'y_center_vcs', 'length_predict', 'width_predict', 'length', 'width', 'height']
-        line14 = ['tf', 'R_id', 'R_type', 'R_dyn', 'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr', 'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_speed', 'R_heading_dr']
+        line14 = ['tf', 'R_id', 'R_type', 'R_dyn', 'R_x_vcs', 'R_y_vcs', 'R_vx_vcs', 'R_vy_vcs', 'R_heading_vcs', 'R_x_dr', 'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_speed', 'R_heading_dr']
         line15 = ['is_dogm_unique']
         line16 = ['loc_time', 'loc_xg', 'loc_yg', 'loc_zg', 'loc_yawrate', 'loc_speed', 'loc_yaw', 'loc_roll', 'loc_pitch']
         line17 = ['dr_time', 'dr_x', 'dr_y', 'dr_z', 'dr_roll', 'dr_pitch', 'dr_yaw']
@@ -158,12 +157,11 @@ def make_fusion_debug():
                 data1 = [system_time, frameId, trk.tf, trk.id, trk.type, trk.age,trk.x, trk.y, trk.x_center_vcs, trk.y_center_vcs, trk.vx, trk.vy, 
                           math.atan2(trk.vy,trk.vx)/3.14*180, trk.heading, math.sqrt(math.pow(trk.vx, 2)+math.pow(trk.vy, 2)), 
                           trk.vx_vcs, trk.vy_vcs, trk.velo_quality, trk.velo_moving_status, trk.velo_is_trk_static, trk.velo_static_cnt, trk.box_iou_k, 
-                          trk.box_iou_static_cnt, trk.box_iou_moving_cnt, trk.is_size_stable, trk.is_in_roi, trk.is_velo_greater_thr, trk.bbox_iou_trend, 
+                          trk.box_iou_static_cnt, trk.box_iou_moving_cnt, trk.is_velo_greater_thr, trk.bbox_iou_trend, 
                           trk.bbox_iou_trend_over_thr, trk.reset_filter]
-                data2 = [trk.dogm_info.is_dogm_valid, trk.dogm_info.dynamic_cnt, trk.dogm_info.static_cnt, trk.dogm_info.is_dogm_static]
+                data2 = [trk.dogm_info.is_dogm_valid, trk.dogm_info.grids_dynamic_cnt, trk.dogm_info.grids_static_cnt, trk.dogm_info.is_dogm_static]
                 data3 = [trk.confidence, trk.fuse_source, trk.fuse_point, trk.is_top_bottom_reversed, trk.cells_size]
-                data4 = [trk.is_lidar_fuse, trk.is_dogm_fuse, trk.is_radar_fuse, trk.lidar_vx, trk.lidar_vy, trk.lidar_velocity, trk.dogm_vx, 
-                          trk.dogm_vy, trk.dogm_velocity, trk.radar_vx, trk.radar_vy, trk.radar_velocity]
+                data4 = [trk.is_lidar_fuse, trk.is_dogm_fuse, trk.is_radar_fuse]
                 data5 = [trk.dogm_info.vxabs, trk.dogm_info.vyabs, trk.dogm_info.velocity, trk.dogm_info.v_heading]
                 data6 = ['', '', '', '', '', '', '', '', '', '', '', '']
                 data7 = ['', '']
@@ -185,6 +183,15 @@ def make_fusion_debug():
                             y_vcs = det.y_vcs
                             x_dr = det.x_dr
                             y_dr = det.y_dr
+                            correlate_id = ''
+                            correlate_age = ''
+                            if len(det.correlate_id) > 0 :
+                                for c_id in det.correlate_id:
+                                  correlate_id = correlate_id + str(c_id) + ' - '
+                            if len(det.correlate_age) > 0 :
+                                for c_age in det.correlate_age:
+                                  correlate_age = correlate_age + str(c_age) + ' - '
+                            data7 =[correlate_id, correlate_age]
                             data6 = [x_vcs, y_vcs, det.heading_vcs, x_dr, y_dr, det.heading_dr, det.length,
                                       det.width, det.height, det.type, det.lidarConfi, det.id]
                             data8_1 = [k.l2c_findSyncVisDet, trk.l2c_totalCamObjs, trk.is_l2c_updated]
@@ -206,7 +213,7 @@ def make_fusion_debug():
                                 data8_2 = ['', '', '', '', '', '', '', '', '', '', '', '']
                             data8_2 = data8_2 + [det.geo_isvalid, det.geo_distance]
 
-                data14 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                data14 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
                 data15 = ['']
                 if len(trk.matched_dets) > 0:
                     for det in trk.matched_dets:
@@ -261,7 +268,7 @@ def make_raw_inputs():
                     noise = 'semantic'
 
                 data3 = [ipt.dogm_info.vxabs, ipt.dogm_info.vyabs, ipt.dogm_info.velocity, ipt.dogm_info.v_heading,
-                         ipt.dogm_info.dynamic_cnt, ipt.dogm_info.static_cnt, ipt.dogm_info.is_dogm_static]
+                         ipt.dogm_info.grids_dynamic_cnt, ipt.dogm_info.grids_static_cnt, ipt.dogm_info.is_dogm_static]
                 data4 = [ipt.l2c_totalCamObjs, ipt.isTrueObj, noise, ipt.geo_isvalid, ipt.geo_distance]
                 data5 = [noise, ipt.sem_is_valid, ipt.sem_total_cloud_pts, ipt.sem_background_pts, ipt.sem_road_curb_pts,
                          ipt.sem_fense_pts, ipt.sem_roadblock_pts, ipt.sem_roaduser_car_pts, ipt.sem_roaduser_other_pts]
@@ -395,7 +402,7 @@ def make_tpperception():
                 data_writer.writerow(data1+data2)
 
                 # get specific track cells data
-                if obj.id == 4178:
+                if obj.id == 8466:
                     point = []
                     counter = 0
                     for cell in cells:
@@ -460,10 +467,122 @@ def make_vehicle_loc_from_imu():
             data_writer.writerow(data1)
 
 ###############################################
+def make_moving_status_debug():
+    with open(directory + "/" + filename[:-4]+'_moving_status_debug.csv', mode='w') as data_file:
+
+        data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        line1 = ['systime', 'p_cnt', 'tf', 'trk_id', 'type', 'type_decide_id', 'age', 'x', 'y', 'x_center_vcs', 'y_center_vcs',
+                  'vx', 'vy', 'speed', 'v_heading', 'heading_dr', 'heading_vcs', 'vx_vcs', 'vy_vcs', 'velo_quality', 'moving_status', 'moving_status_decide_id', 
+                  'is_ultra_static', 'ultra_static_decide_id', 'is_trk_static', 'confi', 'fuse_source']
+        line13 = ['match_lidar_match_num', 'match_dogm_match_num', 'match_radar_match_num',
+                  'match_lidar_match_source', 'match_lidar_det_vx', 'match_lidar_det_vy', 'match_lidar_det_velocity', 'match_lidar_grids_vx', 'match_lidar_grids_vy', 'match_lidar_grids_velocity', 
+                  'match_lidar_filter_vx', 'match_lidar_filter_vy', 'match_lidar_filter_velocity', 
+                  'match_lidar_trk_x_center_vcs', 'match_lidar_trk_y_center_vcs', 'match_lidar_trk_x_center_dr', 'match_lidar_trk_y_center_dr',
+                  'match_dogm_det_vx', 'match_dogm_det_vy', 'match_dogm_det_velocity', 'match_dogm_grids_vx', 'match_dogm_grids_vy', 'match_dogm_grids_velocity',
+                  'match_radar_det_vx', 'match_radar_det_vy', 'match_radar_det_velocity']
+        line18 = ['match_lidar_trk_vx', 'match_lidar_trk_vy', 'match_lidar_trk_velocity',
+                 'match_dogm_trk_vx', 'match_dogm_trk_vy', 'match_dogm_trk_velocity',
+                 'match_radar_trk_vx', 'match_radar_trk_vy', 'match_radar_trk_velocity', 'is_velo_update_by_radar', 'radar_dynamic_cnt', 'radar_static_cnt']
+        line2 = ['velo_static_cnt', 'box_iou_k', 'box_iou_static_cnt', 'box_iou_moving_cnt', 
+                  # 'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter', 'is_static_obj']
+                  'is_velo_greater_thr', 'bbox_iou_trend', 'bbox_iou_trend_over_thr', 'reset_filter']
+        line3 = ['is_dogm_valid', 'dogm_confidence', 'dogm_grids_dynamic_cnt', 'dogm_grids_static_cnt', 'is_dogm_static', 'dogm_dynamic_cnt', 'dogm_static_cnt']
+        line5 = ['dogm_vxabs', 'dogm_vyabs', 'dogm_velocity', 'dogm_v_heading']   
+        line11 = ['vx_bbox_dr', 'vy_bbox_dr', 'v_bbox_dr', 'rms_vx', 'rms_vy']
+        line12 = ['rms_lower_cnt', 'rms_upper_cnt', 'heading_mean', 'heading_rms', 'v_heading', 'v_heading_mean', 'v_heading_rms']
+        line14 = ['tf', 'L_id', 'L_type', 'L_match_method', 'L_x_vcs', 'L_y_vcs', 'L_vx_vcs', 'L_vy_vcs', 'L_heading_vcs', 'L_x_dr', 'L_y_dr', 'L_vx_dr', 'L_vy_dr',
+                  'L_speed', 'L_length', 'L_width', 'L_height']
+        # line14 = ['tf', 'D_id', 'D_type', 'D_dyn', 'D_x_raw', 'D_y_raw', 'D_vx_raw', 'D_vy_raw', 'D_heading_raw', 'D_x_dr', 'D_y_dr', 'D_vx_dr', 'D_vy_dr', 'D_speed', 'D_heading_dr']
+        line15 = ['tf', 'R_id', 'R_is_match_vision', 'R_vision_id' , 'R_type', 'R_vtype', 'R_match_method', 'R_dyn_prop', 'R_prob_of_exist', 'R_rcs', 
+                  'R_x_raw', 'R_y_raw', 'R_vx_raw', 'R_vy_raw', 'R_heading_raw', 'R_x_dr', 'R_y_dr', 'R_vx_dr', 'R_vy_dr', 'R_speed', 'R_heading_vcs', 'R_heading_dr',
+                  'R_measure_vx_dr', 'R_measure_vy_dr', 'R_measure_speed']
+        line16 = ['loc_time', 'loc_xg', 'loc_yg', 'loc_zg', 'loc_yawrate', 'loc_speed', 'loc_yaw', 'loc_roll', 'loc_pitch']
+        line17 = ['dr_time', 'dr_x', 'dr_y', 'dr_z', 'dr_roll', 'dr_pitch', 'dr_yaw']
+
+        data_writer.writerow(line1+line13+line18+line2+line3+line5+line11+line12+line14+line15+line16+line17)
+
+        # Get all message
+        for topic, msg, t in bag.read_messages(topics=['/fusion_debug']):
+            system_time = msg.sysTime
+            frameId = msg.frame
+            p = msg.profile
+            loc = msg.locpos
+            k = msg.keyinfo
+
+            data16 = [loc.toa, loc.xg, loc.yg, loc.zg, loc.yawrate, loc.speed, loc.yaw, loc.roll, loc.pitch]
+            data17 = [loc.dr_toa, loc.dr_x, loc.dr_y, loc.dr_z, loc.dr_roll, loc.dr_pitch, loc.dr_yaw]
+
+            for trk in msg.tracks:
+                data1 = [system_time, frameId, trk.tf, trk.id, trk.type, trk.type_decide_id, trk.age, trk.x, trk.y, trk.x_center_vcs, trk.y_center_vcs, 
+                          trk.vx, trk.vy, trk.speed, math.atan2(trk.vy,trk.vx)/3.14*180, trk.heading, trk.heading_vcs, 
+                          trk.vx_vcs, trk.vy_vcs, trk.velo_quality, trk.velo_moving_status, trk.moving_status_decide_id, 
+                          trk.heading_is_ultra_static, trk.ultra_static_decide_id, trk.velo_is_trk_static, trk.confidence, trk.fuse_source]
+                match_lidar_match_source = "-"
+                if trk.match_lidar.match_source == 0:
+                    match_lidar_match_source = "0"
+                elif trk.match_lidar.match_source == 1:
+                    match_lidar_match_source = "lidar"
+                elif trk.match_lidar.match_source == 2:
+                    match_lidar_match_source = "lidar2object"
+                elif trk.match_lidar.match_source == 3:
+                    match_lidar_match_source = "dogm_cluster"
+                elif trk.match_lidar.match_source == 4:
+                    match_lidar_match_source = "rear_radar"
+                elif trk.match_lidar.match_source == 5:
+                    match_lidar_match_source = "unknown"
+                data13 = [trk.match_lidar.match_num, trk.match_dogm.match_num, trk.match_radar.match_num, match_lidar_match_source, 
+                          trk.match_lidar.det_vx, trk.match_lidar.det_vy, trk.match_lidar.det_velocity, trk.match_lidar.grids_vx, trk.match_lidar.grids_vy, trk.match_lidar.grids_velocity,
+                          trk.match_lidar.filter_vx, trk.match_lidar.filter_vy, trk.match_lidar.filter_velocity,
+                          trk.match_lidar.trk_x_center_vcs, trk.match_lidar.trk_y_center_vcs, trk.match_lidar.trk_x_center_dr, trk.match_lidar.trk_y_center_dr,
+                          trk.match_dogm.det_vx, trk.match_dogm.det_vy, trk.match_dogm.det_velocity, trk.match_dogm.grids_vx, trk.match_dogm.grids_vy, trk.match_dogm.grids_velocity, 
+                          trk.match_radar.det_vx, trk.match_radar.det_vy, trk.match_radar.det_velocity]
+                data18 = [trk.match_lidar.trk_vx, trk.match_lidar.trk_vy, trk.match_lidar.trk_velocity,
+                          trk.match_dogm.trk_vx, trk.match_dogm.trk_vy, trk.match_dogm.trk_velocity,
+                          trk.match_radar.trk_vx, trk.match_radar.trk_vy, trk.match_radar.trk_velocity, trk.is_velo_update_by_radar, 
+                          trk.velo_radar_dynamic_cnt, trk.velo_radar_static_cnt]
+                data2 = [trk.velo_static_cnt, trk.box_iou_k, trk.box_iou_static_cnt, trk.box_iou_moving_cnt, 
+                        #  trk.is_velo_greater_thr, trk.bbox_iou_trend, trk.bbox_iou_trend_over_thr, trk.reset_filter, trk.is_static_obj]
+                         trk.is_velo_greater_thr, trk.bbox_iou_trend, trk.bbox_iou_trend_over_thr, trk.reset_filter]
+                data3 = [trk.dogm_info.is_dogm_valid, trk.dogm_info.confidence, trk.dogm_info.grids_dynamic_cnt, trk.dogm_info.grids_static_cnt, trk.dogm_info.is_dogm_static,
+                         trk.velo_dogm_dynamic_cnt, trk.velo_dogm_static_cnt]
+                data5 = [trk.dogm_info.vxabs, trk.dogm_info.vyabs, trk.dogm_info.velocity, trk.dogm_info.v_heading]
+                data11 = [trk.vx_bbox_dr, trk.vy_bbox_dr, math.sqrt(math.pow(trk.vx_bbox_dr, 2)+math.pow(trk.vy_bbox_dr, 2)), trk.velo_vx_rms, trk.velo_vy_rms]
+                data12 = [trk.heading_lower_cnt, trk.heading_upper_cnt, trk.heading_mean, trk.heading_rms, math.atan2(trk.vy,trk.vx)/3.14*180,
+                          trk.velo_heading_mean, trk.velo_heading_rms]
+                data14 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                data15_1 = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                data15_2 = [trk.match_radar.measure_vx, trk.match_radar.measure_vy, trk.match_radar.measure_velocity]
+
+                if match_lidar_match_source == "rear_radar":
+                  data15_1 = ['matched_radar', trk.radar2cam_info.radar_id, trk.radar2cam_info.matched_vision, trk.radar2cam_info.visionobject_id, trk.radar2cam_info.fusion_type, 
+                            trk.radar2cam_info.visionobject_type, '', trk.radar2cam_info.dyn_prop, trk.radar2cam_info.prob_of_exist, trk.radar2cam_info.rcs, 
+                            '', '', '', '', '', '', '', trk.radar2cam_info.vxabs, 
+                            trk.radar2cam_info.vyabs, trk.radar2cam_info.velocity, det.heading_vcs, det.heading_dr]
+                if len(trk.matched_dets) > 0:
+                    for det in trk.matched_dets:
+                        if det.source == 'lidar':
+                            data14 = ['matched_lidar', det.id, det.type, det.match_method, det.x_vcs, det.y_vcs, det.vx_vcs, det.vy_vcs,
+                                      det.heading_vcs, det.x_dr, det.y_dr, det.vx_dr, det.vy_dr, math.sqrt(math.pow(det.vx_dr, 2)+math.pow(det.vy_dr, 2)),
+                                      det.length, det.width, det.height]
+                        # if det.source == 'dogm':
+                        #     data14 = ['match_dogm', det.id, det.type, det.radar2cam_info.dyn_prop, det.x_vcs, det.y_vcs, det.vx_vcs, det.vy_vcs,
+                        #               det.heading_vcs, det.x_dr, det.y_dr, det.radar2cam_info.vxabs, det.radar2cam_info.vyabs, 
+                        #               math.sqrt(math.pow(det.radar2cam_info.vxabs, 2)+math.pow(det.radar2cam_info.vyabs, 2)), '']
+                        if det.source == 'radar':
+                            data15_1 = ['matched_radar', det.id, det.radar2cam_info.matched_vision, det.radar2cam_info.visionobject_id, det.type, det.radar2cam_info.visionobject_type, 
+                                      det.match_method, det.radar2cam_info.dyn_prop, det.radar2cam_info.prob_of_exist, det.radar2cam_info.rcs, det.x_vcs, det.y_vcs, det.vx_vcs, 
+                                      det.vy_vcs, det.heading_vcs, det.x_dr, det.y_dr, det.radar2cam_info.vxabs, det.radar2cam_info.vyabs, det.radar2cam_info.velocity, 
+                                      det.heading_vcs, det.heading_dr]
+
+                data_writer.writerow(data1+data13+data18+data2+data3+data5+data11+data12+data14+data15_1+data15_2+data16+data17)
+
+###############################################
 def main():
     # make_profile()
     make_fusion_debug()
     make_tpperception()
+    make_moving_status_debug()
     # make_raw_inputs()
     # make_keyinfo()
     # make_mapengine()
