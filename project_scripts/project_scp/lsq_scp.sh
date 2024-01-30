@@ -106,12 +106,12 @@ function chose_car() {
 
 function scp_lib() {
   chose_car $@
-  for line in $(cat .git/HEAD); do
-    line=$line
-  done
-  sudo cp ./.git/${line} ./ -r
-  branch_name=$(git rev-parse --abbrev-ref HEAD)
-  ${ssh_pass} scp -r ${local_path}/${branch_name} ${target_path}/
+  branch_name=$(git rev-parse --abbrev-ref HEAD)  # 获取当前Git仓库中的分支名称
+  commit_sha=$(git rev-parse HEAD)  # 获取当前提交的commit值
+  # 将分支名称和提交commit值写入名为"branch_info"的文件
+  echo "$branch_name" > ./branch_info
+  echo "$commit_sha" >> ./branch_info
+  ${ssh_pass} scp -r ${local_path}/branch_info ${target_path}/
 
   start "scp [${GREEN}${default_dir}/devel/lib/*${NO_COLOR}] to [${GREEN}${target_path}/devel/lib/${NO_COLOR}] ······"
   ${ssh_pass} scp -r ${local_path}/devel/lib/* ${target_path}/devel/lib/
@@ -153,6 +153,7 @@ function scp_csv() {
 function submoudle_sync() {
   chose_car $@
   cd ${local_path}/script/offline_perception/
+  git checkout .
   git checkout develop
   git pull
 }
