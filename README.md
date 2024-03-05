@@ -1,3 +1,5 @@
-# my-scripts
-常用的一些shell脚本
+# My-Scripts
 
+常用工作脚本
+
+> notice：本项目的目的是分享记录平常工作中主要使用到的脚本。
