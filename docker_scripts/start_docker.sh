@@ -1,15 +1,15 @@
-
+PRO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 USER_ID=$(id -u)
 GRP=$(id -g -n)
 GRP_ID=$(id -g)
-LOCAL_HOST=`hostname`
+LOCAL_HOST=$(hostname)
 DOCKER_HOME="/home/$USER"
 
-if [ "$USER" == "root" ];then
-    DOCKER_HOME="/root"
+if [ "$USER" == "root" ]; then
+  DOCKER_HOME="/root"
 fi
-if [ ! -d "$HOME/.cache" ];then
-    mkdir "$HOME/.cache"
+if [ ! -d "$HOME/.cache" ]; then
+  mkdir "$HOME/.cache"
 fi
 
 IMG="192.168.2.95/ktdx/foxy_eloquent_xavier_jetpack4_6:20220225"
@@ -29,7 +29,7 @@ docker run -it \
 		-v /media:/media \
 		-v $HOME/.cache:${DOCKER_HOME}/.cache \
 		-v /etc/localtime:/etc/localtime:ro \
-		-v /home/$USER/avos3_0:/work/share \
+  -v $PRO_DIR:/work/share/project \
 		--net host \
 		--shm-size 512M \
 		-w /work/share/project \
